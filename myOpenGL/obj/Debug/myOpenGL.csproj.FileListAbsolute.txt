@@ -1,0 +1,9 @@
+C:\Users\Chen\Desktop\לימודים\גרפיקה ממוחשבת\p6\Robot\myOpenGL\bin\Debug\myOpenGL.exe
+C:\Users\Chen\Desktop\לימודים\גרפיקה ממוחשבת\p6\Robot\myOpenGL\bin\Debug\myOpenGL.pdb
+C:\Users\Chen\Desktop\לימודים\גרפיקה ממוחשבת\p6\Robot\myOpenGL\obj\Debug\myOpenGL.csprojAssemblyReference.cache
+C:\Users\Chen\Desktop\לימודים\גרפיקה ממוחשבת\p6\Robot\myOpenGL\obj\Debug\myOpenGL.Form1.resources
+C:\Users\Chen\Desktop\לימודים\גרפיקה ממוחשבת\p6\Robot\myOpenGL\obj\Debug\myOpenGL.Properties.Resources.resources
+C:\Users\Chen\Desktop\לימודים\גרפיקה ממוחשבת\p6\Robot\myOpenGL\obj\Debug\myOpenGL.csproj.GenerateResource.cache
+C:\Users\Chen\Desktop\לימודים\גרפיקה ממוחשבת\p6\Robot\myOpenGL\obj\Debug\myOpenGL.csproj.CoreCompileInputs.cache
+C:\Users\Chen\Desktop\לימודים\גרפיקה ממוחשבת\p6\Robot\myOpenGL\obj\Debug\myOpenGL.exe
+C:\Users\Chen\Desktop\לימודים\גרפיקה ממוחשבת\p6\Robot\myOpenGL\obj\Debug\myOpenGL.pdb
