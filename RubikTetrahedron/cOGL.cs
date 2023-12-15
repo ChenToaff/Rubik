@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-//2
 using System.Drawing;
 
 namespace OpenGL

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace myOpenGL.Properties {
+namespace RubikTetrahedron.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

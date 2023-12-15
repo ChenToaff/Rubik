@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "myOpenGL", "myOpenGL\myOpenGL.csproj", "{D118B639-8BF0-4AB3-B64D-254EE7731890}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RubikTetrahedron", "RubikTetrahedron\RubikTetrahedron.csproj", "{D118B639-8BF0-4AB3-B64D-254EE7731890}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
