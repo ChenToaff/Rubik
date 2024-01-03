@@ -26,9 +26,9 @@ namespace OpenGL
             GL.glBegin(GL.GL_LINES);
 
             GL.glColor3f(1.0f, 0.0f, 0.0f); //    x  RED
-            int i = Rubik_Management.axis - 1;
-            GL.glVertex3d(2 * Rubik_Management.dir_XYZ[i, 0], 2 * Rubik_Management.dir_XYZ[i, 1], 2 * Rubik_Management.dir_XYZ[i, 2]);
-            GL.glVertex3d(-2 * Rubik_Management.dir_XYZ[i, 0], -2 * Rubik_Management.dir_XYZ[i, 1], -2 * Rubik_Management.dir_XYZ[i, 2]);
+            int i = RubikController.axis - 1;
+            GL.glVertex3d(2 * RubikController.dir_XYZ[i, 0], 2 * RubikController.dir_XYZ[i, 1], 2 * RubikController.dir_XYZ[i, 2]);
+            GL.glVertex3d(-2 * RubikController.dir_XYZ[i, 0], -2 * RubikController.dir_XYZ[i, 1], -2 * RubikController.dir_XYZ[i, 2]);
 
             GL.glEnd();
             GL.glPopMatrix();

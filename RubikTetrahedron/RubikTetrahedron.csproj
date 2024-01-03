@@ -43,9 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="cOGL.cs" />
+    <Compile Include="Controllers\cOGL.cs" />
     <Compile Include="Models\Cubemap.cs" />
-    <Compile Include="Controllers\Drawings.cs" />
+    <Compile Include="Helpers\Drawings.cs" />
     <Compile Include="Views\Rubik.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -81,14 +81,11 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Models\RubikTetrahedron.cs" />
-    <Compile Include="Controllers\Rubik_Management.cs" />
+    <Compile Include="Controllers\RubikController.cs" />
     <Compile Include="Helpers\Shading.cs" />
     <Compile Include="Models\Tetrahedron.cs" />
     <Compile Include="OpenGL\Vector.cs" />
     <Compile Include="OpenGL\WGL.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Bitmap1.bmp" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\back.bmp" />

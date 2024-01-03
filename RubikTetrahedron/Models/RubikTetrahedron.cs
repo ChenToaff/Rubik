@@ -52,7 +52,7 @@ namespace OpenGL
         public static int draw_index;
         public static void DrawTetrahedron(bool flag, bool is_bottom = false)
         {
-            if (draw_index++ != Rubik_Management.t[only_draw].id)
+            if (draw_index++ != RubikController.t[only_draw].id)
             {
                 return;
             }
@@ -98,7 +98,7 @@ namespace OpenGL
             for (int j = 0; j < 4; j++)
             {
 
-                setColor(Rubik_Management.t[only_draw].colors[j]);
+                setColor(RubikController.t[only_draw].colors[j]);
                 for (int i = 0; i < 3; i++)
                 {
                     triangle[i] = new Vector(vertices[indices[j, i], 0], vertices[indices[j, i], 1], vertices[indices[j, i], 2]);
@@ -165,7 +165,7 @@ namespace OpenGL
             
             GL.glPushMatrix();
 
-            GL.glMultMatrixd(Rubik_Management.t[only].rotation_matrix);
+            GL.glMultMatrixd(RubikController.t[only].rotation_matrix);
 
             only_draw = only;
 
@@ -254,30 +254,30 @@ namespace OpenGL
         }
         public static void init_Rubik()
         {
-            Rubik_Management.add_tetrahedron(0,new[] { Color.red, Color.blue, Color.green, Color.black });  //0  main corner
-            Rubik_Management.add_tetrahedron(1,new[] { Color.black, Color.black, Color.green, Color.red });  //1 center-piece
-            Rubik_Management.add_tetrahedron(2,new[] { Color.black, Color.black, Color.red, Color.black });  //2
-            Rubik_Management.add_tetrahedron(3,new[] { Color.red, Color.black, Color.green, Color.black });  //3
-            Rubik_Management.add_tetrahedron(4,new[] { Color.black, Color.black, Color.green, Color.black });  //4  center-piece
-            Rubik_Management.add_tetrahedron(5,new[] { Color.black, Color.black, Color.red, Color.black });  //5
-            Rubik_Management.add_tetrahedron(6,new[] { Color.red, Color.black, Color.green, Color.yellow });  //6   main corner
-            Rubik_Management.add_tetrahedron(7,new[] { Color.black, Color.black, Color.yellow, Color.black });  //7 center-piece
-            Rubik_Management.add_tetrahedron(8,new[] { Color.red, Color.black, Color.yellow, Color.black });  //8
-            Rubik_Management.add_tetrahedron(9,new[] { Color.black, Color.black, Color.red, Color.black });  //9 center-piece
-            Rubik_Management.add_tetrahedron(10,new[] { Color.black, Color.black, Color.yellow, Color.black });  //10
-            Rubik_Management.add_tetrahedron(11,new[] { Color.red, Color.black, Color.yellow, Color.blue });  //11   main corner
-            Rubik_Management.add_tetrahedron(12,new[] { Color.black, Color.black, Color.blue, Color.black });  //12 center-piece
-            Rubik_Management.add_tetrahedron(13,new[] { Color.red, Color.black, Color.blue, Color.black });  //13 
-            Rubik_Management.add_tetrahedron(14,new[] { Color.black, Color.black, Color.blue, Color.black });  //14 center-piece
-            Rubik_Management.add_tetrahedron(15,new[] { Color.black, Color.blue, Color.green, Color.black });  //15 corner
-            Rubik_Management.add_tetrahedron(16,new[] { Color.black, Color.black, Color.green, Color.black });  //16 center-piece
-            Rubik_Management.add_tetrahedron(17,new[] { Color.black, Color.black, Color.green, Color.yellow });  //17 corner
-            Rubik_Management.add_tetrahedron(18,new[] { Color.black, Color.black, Color.yellow, Color.black });  //18 center-piece
-            Rubik_Management.add_tetrahedron(19,new[] { Color.black, Color.black, Color.yellow, Color.blue });  //19 corner
-            Rubik_Management.add_tetrahedron(20,new[] { Color.black, Color.black, Color.blue, Color.black });  //20 center-piece
-            Rubik_Management.add_tetrahedron(21,new[] { Color.black, Color.blue, Color.green, Color.yellow });  //21  main corner
+            RubikController.add_tetrahedron(0,new[] { Color.red, Color.blue, Color.green, Color.black });  //0  main corner
+            RubikController.add_tetrahedron(1,new[] { Color.black, Color.black, Color.green, Color.red });  //1 center-piece
+            RubikController.add_tetrahedron(2,new[] { Color.black, Color.black, Color.red, Color.black });  //2
+            RubikController.add_tetrahedron(3,new[] { Color.red, Color.black, Color.green, Color.black });  //3
+            RubikController.add_tetrahedron(4,new[] { Color.black, Color.black, Color.green, Color.black });  //4  center-piece
+            RubikController.add_tetrahedron(5,new[] { Color.black, Color.black, Color.red, Color.black });  //5
+            RubikController.add_tetrahedron(6,new[] { Color.red, Color.black, Color.green, Color.yellow });  //6   main corner
+            RubikController.add_tetrahedron(7,new[] { Color.black, Color.black, Color.yellow, Color.black });  //7 center-piece
+            RubikController.add_tetrahedron(8,new[] { Color.red, Color.black, Color.yellow, Color.black });  //8
+            RubikController.add_tetrahedron(9,new[] { Color.black, Color.black, Color.red, Color.black });  //9 center-piece
+            RubikController.add_tetrahedron(10,new[] { Color.black, Color.black, Color.yellow, Color.black });  //10
+            RubikController.add_tetrahedron(11,new[] { Color.red, Color.black, Color.yellow, Color.blue });  //11   main corner
+            RubikController.add_tetrahedron(12,new[] { Color.black, Color.black, Color.blue, Color.black });  //12 center-piece
+            RubikController.add_tetrahedron(13,new[] { Color.red, Color.black, Color.blue, Color.black });  //13 
+            RubikController.add_tetrahedron(14,new[] { Color.black, Color.black, Color.blue, Color.black });  //14 center-piece
+            RubikController.add_tetrahedron(15,new[] { Color.black, Color.blue, Color.green, Color.black });  //15 corner
+            RubikController.add_tetrahedron(16,new[] { Color.black, Color.black, Color.green, Color.black });  //16 center-piece
+            RubikController.add_tetrahedron(17,new[] { Color.black, Color.black, Color.green, Color.yellow });  //17 corner
+            RubikController.add_tetrahedron(18,new[] { Color.black, Color.black, Color.yellow, Color.black });  //18 center-piece
+            RubikController.add_tetrahedron(19,new[] { Color.black, Color.black, Color.yellow, Color.blue });  //19 corner
+            RubikController.add_tetrahedron(20,new[] { Color.black, Color.black, Color.blue, Color.black });  //20 center-piece
+            RubikController.add_tetrahedron(21,new[] { Color.black, Color.blue, Color.green, Color.yellow });  //21  main corner
 
-            Rubik_Management.set_direction(1);
+            RubikController.set_direction(1);
         }
 
         

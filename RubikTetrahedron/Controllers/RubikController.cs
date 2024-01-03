@@ -5,7 +5,7 @@ using System.Text;
 namespace OpenGL
 {
 
-    public static class Rubik_Management
+    public static class RubikController
     {
         public static Tetrahedron[] t = new Tetrahedron[22];
         private static int t_index = 0;
@@ -80,25 +80,25 @@ namespace OpenGL
         //top will be modulo of colors;
         //others will be a switch. might need to change order in array of tethedrons.
 
-        private static void rotate(ref int[] arr, int d,int n,int start)
+        private static void rotate(ref int[] arr, int diff,int n,int start)
         {
             int k = start;
             Tetrahedron[] temp = new Tetrahedron[n];
-            for (int i = d + start; i < n; i++)
+            for (int i = diff + start; i < n; i++)
             {
                 temp[k] = t[arr[i]];
                 k++;
             }
 
-            // Storing the first d elements of array arr[]
+            // Storing the first diff elements of array arr[]
             //  into temp
-            for (int i = 0 + start; i < d + start; i++)
+            for (int i = 0 + start; i < diff + start; i++)
             {
                 temp[k] = t[arr[i]];
                 k++;
             }
 
-            // Copying the elements of temp[] in arr[]
+            // Copying the elements of temp[] into arr[]
             // to get the final rotated array
             for (int i = 0 + start; i < n; i++)
             {

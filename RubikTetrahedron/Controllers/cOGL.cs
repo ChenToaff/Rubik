@@ -175,19 +175,10 @@ namespace OpenGL
             pfd.cColorBits = 32;
             pfd.cDepthBits = 32;
             pfd.iLayerType = (byte)(WGL.PFD_MAIN_PLANE);
-
-            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-            //for Stencil support 
-
+            //for Stencil support:
             pfd.cStencilBits = 32;
 
-            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-            int pixelFormatIndex = 0;
-            pixelFormatIndex = WGL.ChoosePixelFormat(m_uint_DC, ref pfd);
+            int pixelFormatIndex = WGL.ChoosePixelFormat(m_uint_DC, ref pfd);
             if (pixelFormatIndex == 0)
             {
                 MessageBox.Show("Unable to retrieve pixel format");
