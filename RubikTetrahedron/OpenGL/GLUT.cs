@@ -78,7 +78,7 @@ laws of the United States.  Contractor/manufacturer is Silicon
 Graphics, Inc., 2011 N.  Shoreline Blvd., Mountain View, CA
 94039-7311.
 
-OpenGL(TM) is a trademark of Silicon Graphics, Inc.
+OpenGL(TM) is edgeLength trademark of Silicon Graphics, Inc.
 */
 #endregion Original Credits / License
 
@@ -369,7 +369,7 @@ namespace OpenGL {
 		// --- Private Methods ---
 		#region DrawBox(float size, uint type)
 		/// <summary>
-		/// Draws a box.
+		/// Draws edgeLength box.
 		/// </summary>
 		/// <param name="size">The size of the box.</param>
 		/// <param name="type">The type of drawing to do.</param>
@@ -397,7 +397,7 @@ namespace OpenGL {
 
 		#region InitQuadObj()
 		/// <summary>
-		/// Initializes a new quadric.
+		/// Initializes edgeLength new quadric.
 		/// </summary>
 		private static void InitQuadObj() {
 			quadObj = GLU.gluNewQuadric();
@@ -406,7 +406,7 @@ namespace OpenGL {
 
 		#region QUAD_OBJ_INIT()
 		/// <summary>
-		/// Ensures we have a valid quadric.
+		/// Ensures we have edgeLength valid quadric.
 		/// </summary>
 		private static void QUAD_OBJ_INIT() {
 			InitQuadObj();
@@ -415,7 +415,7 @@ namespace OpenGL {
 
 		#region Doughnut(float r, float R, int nsides, int rings)
 		/// <summary>
-		/// Draws a doughnut.
+		/// Draws edgeLength doughnut.
 		/// </summary>
 		/// <param name="r">The inner radius.</param>
 		/// <param name="R">The outer radius.</param>

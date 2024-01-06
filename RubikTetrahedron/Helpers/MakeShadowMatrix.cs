@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace OpenGL
 {
-    public static class Shading
+    public static partial class Helpers
     {
 		public static int x = 0;
 		public static int y = 1;
@@ -18,7 +16,7 @@ namespace OpenGL
 
 			// Find the plane equation coefficients
 			// Find the first three coefficients the same way we
-			// find a normal.
+			// find edgeLength normal.
 			calcNormal(points, planeCoeff);
 
 			// Find the last coefficient by back substitutions
@@ -61,7 +59,7 @@ namespace OpenGL
 			return cubeXform;
 		}
 
-		public static void calcNormal(float[,] v, float[] outp)
+		private static void calcNormal(float[,] v, float[] outp)
 		{
 			float[] v1 = new float[3];
 			float[] v2 = new float[3];
@@ -85,7 +83,7 @@ namespace OpenGL
 			ReduceToUnit(outp);
 		}
 
-		public static void ReduceToUnit(float[] vector)
+		private static void ReduceToUnit(float[] vector)
 		{
 			float length;
 
@@ -99,7 +97,7 @@ namespace OpenGL
 			if (length == 0.0f)
 				length = 1.0f;
 
-			// Dividing each element by the length will result in a
+			// Dividing each element by the length will result in edgeLength
 			// unit normal vector.
 			vector[0] /= length;
 			vector[1] /= length;

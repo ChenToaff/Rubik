@@ -15,7 +15,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,8 +44,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\cOGL.cs" />
-    <Compile Include="Models\Cubemap.cs" />
-    <Compile Include="Helpers\Drawings.cs" />
+    <Compile Include="Utils\DrawAxis.cs" />
+    <Compile Include="Utils\DrawLightSource.cs" />
+    <Compile Include="Utils\DrawReflection.cs" />
+    <Compile Include="Helpers\SetColor.cs" />
+    <Compile Include="Models\Room.cs" />
+    <Compile Include="Utils\DrawFloor.cs" />
+    <Compile Include="Models\Enums.cs" />
+    <Compile Include="Utils\DrawRoom.cs" />
+    <Compile Include="Utils\DrawRubik.cs" />
+    <Compile Include="Utils\DrawShading.cs" />
+    <Compile Include="Utils\DrawTetrahedron.cs" />
+    <Compile Include="Utils\GenerateTextures.cs" />
     <Compile Include="Views\Rubik.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -81,8 +91,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Models\RubikTetrahedron.cs" />
-    <Compile Include="Controllers\RubikController.cs" />
-    <Compile Include="Helpers\Shading.cs" />
+    <Compile Include="Helpers\MakeShadowMatrix.cs" />
     <Compile Include="Models\Tetrahedron.cs" />
     <Compile Include="OpenGL\Vector.cs" />
     <Compile Include="OpenGL\WGL.cs" />

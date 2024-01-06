@@ -20,8 +20,8 @@ namespace OpenGL
             Height = p.Height;
             InitializeGL();
             obj = GLU.gluNewQuadric(); //!!!
-            Rubik.init_Rubik();
-            Cubemap.GenerateTextures();
+            RubikTetrahedron.Init();
+            Utils.GenerateTextures();
         }
 
         ~cOGL()
@@ -61,14 +61,14 @@ namespace OpenGL
 
         public int intOptionC = 0;
         double[] AccumulatedRotationsTraslations = new double[16];
-        public float[] pos = new float[4];
+        public float[] lightPosition = new float[4];
 
         public void Draw()
         {
-            pos[0] = ScrollValue[10];
-            pos[1] = ScrollValue[11];
-            pos[2] = ScrollValue[12];
-            pos[3] = 1.0f;
+            lightPosition[0] = ScrollValue[10];
+            lightPosition[1] = ScrollValue[11];
+            lightPosition[2] = ScrollValue[12];
+            lightPosition[3] = 1.0f;
 
             if (m_uint_DC == 0 || m_uint_RC == 0)
                 return;
@@ -150,7 +150,13 @@ namespace OpenGL
             GL.glLoadMatrixd(ModelVievMatrixBeforeSpecificTransforms);
             //multiply it by KeyCode defined AccumulatedRotationsTraslations matrix
             GL.glMultMatrixd(AccumulatedRotationsTraslations);
-            Drawings.Draw(pos);
+            Utils.DrawRoom();
+            Utils.DrawLightSource(lightPosition);
+            Utils.DrawReflection();
+            Utils.DrawFloor();
+            Utils.DrawShading(lightPosition);
+            Utils.DrawAxis();
+            Utils.DrawRubik();
             GL.glFlush();
 
             WGL.wglSwapBuffers(m_uint_DC);
@@ -164,7 +170,7 @@ namespace OpenGL
             m_uint_DC = WGL.GetDC(m_uint_HWND);
 
             // Not doing the following WGL.wglSwapBuffers() on the DC will
-            // result in a failure to subsequently create the RC.
+            // result in edgeLength failure to subsequently create the RC.
             WGL.wglSwapBuffers(m_uint_DC);
 
             WGL.PIXELFORMATDESCRIPTOR pfd = new WGL.PIXELFORMATDESCRIPTOR();

@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using OpenGL;
 using System.Runtime.InteropServices;
+using RubikTetrahedron.Enums;
 
 namespace RubikTetrahedron
 {
@@ -175,22 +176,22 @@ namespace RubikTetrahedron
                 double[] rotation_matrix = new double[16];
                 double[] temp = new double[16];
                 GL.glLoadIdentity();
-                GL.glRotated(rotate_direction, RubikController.dir_XYZ[RubikController.axis - 1, 0], RubikController.dir_XYZ[RubikController.axis - 1, 1], RubikController.dir_XYZ[RubikController.axis - 1, 2]);
+                GL.glRotated(rotate_direction, OpenGL.RubikTetrahedron.dir_XYZ[OpenGL.RubikTetrahedron.axis - 1, 0], OpenGL.RubikTetrahedron.dir_XYZ[OpenGL.RubikTetrahedron.axis - 1, 1], OpenGL.RubikTetrahedron.dir_XYZ[OpenGL.RubikTetrahedron.axis - 1, 2]);
                 GL.glGetDoublev(GL.GL_MODELVIEW_MATRIX, temp);
-                GL.glMultMatrixd(RubikController.t[RubikController.top].rotation_matrix);
+                GL.glMultMatrixd(OpenGL.RubikTetrahedron.tetrahedronArray[OpenGL.RubikTetrahedron.top].rotation_matrix);
                 GL.glGetDoublev(GL.GL_MODELVIEW_MATRIX, rotation_matrix);
 
-                RubikController.t[RubikController.top].rotation_matrix = (double[])rotation_matrix.Clone();
+                OpenGL.RubikTetrahedron.tetrahedronArray[OpenGL.RubikTetrahedron.top].rotation_matrix = (double[])rotation_matrix.Clone();
                 GL.glPopMatrix();
                 cGL.Draw();
 
             }
         }
 
-            
-           
 
-        
+
+
+
         private void rotate_middle(object sender, EventArgs e)
         {
             bool right = true;
@@ -200,28 +201,28 @@ namespace RubikTetrahedron
 
             for (int j = 0; j < 120; j++)
             {
-                for (int i = 0; i < RubikController.t.Length; i++)
+                for (int i = 0; i < OpenGL.RubikTetrahedron.tetrahedronArray.Length; i++)
                 {
-                    if(RubikController.t[i].loc == location.middle)
+                    if (OpenGL.RubikTetrahedron.tetrahedronArray[i].loc == location.middle)
                     {
                         //RubikController.t[i].rotation_in_dir[RubikController.axis - 1] += 1 * rotate_direction;
                         GL.glPushMatrix();
                         double[] rotation_matrix = new double[16];
                         double[] temp = new double[16];
                         GL.glLoadIdentity();
-                        GL.glRotated(rotate_direction, RubikController.dir_XYZ[RubikController.axis - 1, 0], RubikController.dir_XYZ[RubikController.axis - 1, 1], RubikController.dir_XYZ[RubikController.axis - 1, 2]);
+                        GL.glRotated(rotate_direction, OpenGL.RubikTetrahedron.dir_XYZ[OpenGL.RubikTetrahedron.axis - 1, 0], OpenGL.RubikTetrahedron.dir_XYZ[OpenGL.RubikTetrahedron.axis - 1, 1], OpenGL.RubikTetrahedron.dir_XYZ[OpenGL.RubikTetrahedron.axis - 1, 2]);
                         GL.glGetDoublev(GL.GL_MODELVIEW_MATRIX, temp);
-                        GL.glMultMatrixd(RubikController.t[i].rotation_matrix);
+                        GL.glMultMatrixd(OpenGL.RubikTetrahedron.tetrahedronArray[i].rotation_matrix);
                         GL.glGetDoublev(GL.GL_MODELVIEW_MATRIX, rotation_matrix);
 
-                        RubikController.t[i].rotation_matrix = (double[])rotation_matrix.Clone();
+                        OpenGL.RubikTetrahedron.tetrahedronArray[i].rotation_matrix = (double[])rotation_matrix.Clone();
                         GL.glPopMatrix();
                     }
 
                 }
                 cGL.Draw();
             }
-            RubikController.rotate_middle(right);
+            OpenGL.RubikTetrahedron.rotate_middle(right);
 
         }
         private void rotate_bottom(object sender, EventArgs e)
@@ -233,50 +234,49 @@ namespace RubikTetrahedron
 
             for (int j = 0; j < 120; j++)
             {
-                for (int i = 0; i < RubikController.t.Length; i++)
+                for (int i = 0; i < OpenGL.RubikTetrahedron.tetrahedronArray.Length; i++)
                 {
-                    if (RubikController.t[i].loc == location.bottom)
+                    if (OpenGL.RubikTetrahedron.tetrahedronArray[i].loc == location.bottom)
                     {
                         GL.glPushMatrix();
                         double[] rotation_matrix = new double[16];
                         double[] temp = new double[16];
                         GL.glLoadIdentity();
-                        GL.glRotated(rotate_direction, RubikController.dir_XYZ[RubikController.axis - 1, 0], RubikController.dir_XYZ[RubikController.axis - 1, 1], RubikController.dir_XYZ[RubikController.axis - 1, 2]);
+                        GL.glRotated(rotate_direction, OpenGL.RubikTetrahedron.dir_XYZ[OpenGL.RubikTetrahedron.axis - 1, 0], OpenGL.RubikTetrahedron.dir_XYZ[OpenGL.RubikTetrahedron.axis - 1, 1], OpenGL.RubikTetrahedron.dir_XYZ[OpenGL.RubikTetrahedron.axis - 1, 2]);
                         GL.glGetDoublev(GL.GL_MODELVIEW_MATRIX, temp);
                         //GL.glLoadMatrixd(RubikController.t[i].rotation_matrix);
-                        GL.glMultMatrixd(RubikController.t[i].rotation_matrix);
+                        GL.glMultMatrixd(OpenGL.RubikTetrahedron.tetrahedronArray[i].rotation_matrix);
                         GL.glGetDoublev(GL.GL_MODELVIEW_MATRIX, rotation_matrix);
 
-                        RubikController.t[i].rotation_matrix = (double[])rotation_matrix.Clone();
+                        OpenGL.RubikTetrahedron.tetrahedronArray[i].rotation_matrix = (double[])rotation_matrix.Clone();
                         GL.glPopMatrix();
                     }
                 }
                 cGL.Draw();
             }
-            RubikController.rotate_bottom(right);
+            OpenGL.RubikTetrahedron.rotate_bottom(right);
         }
         private void direction_radioButton(object sender, EventArgs e)
         {
             if (sender == direction1)
             {
-               RubikController.set_direction(1);
+                OpenGL.RubikTetrahedron.SetAxis(1);
             }
-            else if(sender == direction2)
+            else if (sender == direction2)
             {
-                RubikController.set_direction(2);
+                OpenGL.RubikTetrahedron.SetAxis(2);
             }
             else if (sender == direction3)
             {
-                RubikController.set_direction(3);
+                OpenGL.RubikTetrahedron.SetAxis(3);
             }
             else if (sender == direction4)
             {
-                RubikController.set_direction(4);
+                OpenGL.RubikTetrahedron.SetAxis(4);
             }
 
         }
 
-      
+
     }
 }
-        

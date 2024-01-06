@@ -1,20 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+using RubikTetrahedron.Enums;
 namespace OpenGL
 { 
     public class Tetrahedron
     {
         public double[] rotation_matrix = new double[16] { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
         public Color[] colors;
-        public int id;
         public location loc;
+        public bool isFlippedPiece;
+        public bool isBottomPiece;
+        public int id;
+        private static int idCounter = 0;
 
-        public Tetrahedron(int id,Color[]  colors)
+        public static double edgeLength = 1;
+        public static double height = (Math.Sqrt(6) / 3) * edgeLength;
+        public static double width = (Math.Sqrt(3) / 2) * edgeLength;
+
+        public Tetrahedron(Color[] colors, bool flippedPiece, bool bottomPiece = false)
         {
+            this.id = idCounter++;
             this.colors = (Color[])colors.Clone();
-            this.id = id;
+            this.isFlippedPiece = flippedPiece;
+            this.isBottomPiece = bottomPiece;
         }
     }
 }

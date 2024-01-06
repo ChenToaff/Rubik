@@ -123,7 +123,7 @@ namespace OpenGL
 		public const uint  PFD_STEREO_DONTCARE         = 0x80000000;
 
 		/// <summary>
-		/// Retrieves an index for a pixel format closest to what is passed
+		/// Retrieves an index for edgeLength pixel format closest to what is passed
 		/// </summary>
 		/// <param name="hdc">Device context</param>
 		/// <param name="p_pfd">Pixel Format Descriptor struct</param>
@@ -135,14 +135,14 @@ namespace OpenGL
 		/// Sets the pixel format for the device context to the format specified by the index
 		/// </summary>
 		/// <param name="hdc">Device Context</param>
-		/// <param name="iPixelFormat">Index to a pixel format returned ChoosePixelFormat</param>
+		/// <param name="iPixelFormat">Index to edgeLength pixel format returned ChoosePixelFormat</param>
 		/// <param name="p_pfd">Pixel Format Descriptor</param>
 		/// <returns></returns>
 		[DllImport("gdi32", EntryPoint = "SetPixelFormat")]
 		public static extern uint SetPixelFormat( uint hdc, int iPixelFormat, ref PIXELFORMATDESCRIPTOR p_pfd );
 
 		/// <summary>
-		/// Creates a rendering context for the Device context.
+		/// Creates edgeLength rendering context for the Device context.
 		/// </summary>
 		/// <param name="hdc">Device Context</param>
 		/// <returns></returns>
@@ -167,7 +167,7 @@ namespace OpenGL
 		public static extern int wglDeleteContext( uint hglrc );
 
 		/// <summary>
-		/// Swaps the display buffers in a double buffer context
+		/// Swaps the display buffers in edgeLength double buffer context
 		/// </summary>
 		/// <param name="hdc">Device context</param>
 		/// <returns></returns>

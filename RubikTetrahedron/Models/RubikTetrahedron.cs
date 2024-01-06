@@ -1,285 +1,147 @@
-﻿using OpenGL;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿﻿using System;
+using RubikTetrahedron.Enums;
+
 namespace OpenGL
 {
-    public enum Color
+    public static class RubikTetrahedron
     {
-        red,
-        green,
-        blue,
-        yellow,
-        black
-    }
-    public enum location
-    {
-        top,
-        middle,
-        bottom,
-    }
-    public static class Rubik
-    {
-      
-        public static double a = 1;
-        public static double h = (Math.Sqrt(6) / 3) * a;
-        public static double t_height = (Math.Sqrt(3) / 2) * a;
+        public static Tetrahedron[] tetrahedronArray = new Tetrahedron[22];
+        public static int axis;
+        public static int[] bottom;
+        public static int[] middle;
+        public static int top;
 
-        public static double big_a = (3*a);
-        public static double big_h = (Math.Sqrt(6) / 3) * big_a;
-        public static double big_t_height = (Math.Sqrt(3) / 2) * big_a;
 
-        public static double mid_a =  (2 * a);
-        public static double mid_h = (Math.Sqrt(6) / 3) * mid_a;
-        public static double mid_t_height = (Math.Sqrt(3) / 2) * mid_a;
+        public static double edgeLength = (3 * Tetrahedron.edgeLength);
+        public static double width = (Math.Sqrt(6) / 3) * edgeLength;
+        public static double height = (Math.Sqrt(3) / 2) * edgeLength;
 
+        public static double mediumHeight = (Math.Sqrt(3) / 2) * (2 * Tetrahedron.edgeLength);
         public static bool shadingMode;
 
 
-        private static double[,] vertices = new double[4, 3] {
-                { -0.5*a,   0.0f,   0.0f },
-                { 0.5*a,  0.0f,  0.0f},
-                { 0, t_height ,0},
-                { 0, t_height/3, h},
-                };
-        
-        private static int[,] indices = new int[4, 3] { { 0, 2, 1 }, { 0, 3, 2 }, { 1, 3, 0 }, { 1, 2, 3 } };
-        private static double[] location_matrix = new double[16];
-        public static float TOP_ANGLE = 0;
-        public static float MIDDLE_ANGLE = 0;
-        public static float BOTTOM_ANGLE = 0;
-        public static int only_draw;
-        public static int draw_index;
-        public static void DrawTetrahedron(bool flag, bool is_bottom = false)
+
+
+        public static double[,] dir_XYZ = new double[4,3] {
+            { 0, 0, 1.5* (Tetrahedron.edgeLength) } ,
+            { -1.5* (Tetrahedron.edgeLength), -height / 3,-(width/4) },
+            {0,(2*height/3),  -(width/4) },
+            { 1.5* (Tetrahedron.edgeLength) , -height / 3,-(width/4) },
+        };
+       
+        public static void Init()
         {
-            if (draw_index++ != RubikController.t[only_draw].id)
-            {
-                return;
-            }
-            GL.glPushMatrix();
-            if (flag)
-            {
-                double[] angleMatrix = new double[16];
-                GL.glPushMatrix();
-                GL.glLoadIdentity();
-                GL.glTranslated(-0, t_height/3 + TOP_ANGLE, h);
-                GL.glGetDoublev(GL.GL_MODELVIEW_MATRIX, angleMatrix);
-                GL.glPopMatrix();
-                GL.glMultMatrixd(angleMatrix);
-                GL.glPushMatrix();
-                GL.glLoadIdentity();
-                GL.glRotated(180, 0, 1, 0);
-                GL.glRotated(37.9, 1, 0, 0);
-                GL.glGetDoublev(GL.GL_MODELVIEW_MATRIX, angleMatrix);
-                GL.glPopMatrix();
-                GL.glMultMatrixd(angleMatrix);
+            tetrahedronArray[0] = new Tetrahedron(new[] { Color.red, Color.blue, Color.green, Color.black },  false);      //0  main corner
+            tetrahedronArray[1] = new Tetrahedron(new[] { Color.black, Color.black, Color.green, Color.red }, true);       ;  //1 center-piece
+            tetrahedronArray[2] = new Tetrahedron(new[] { Color.black, Color.black, Color.red, Color.black },  false, true);              //2
+            tetrahedronArray[3] = new Tetrahedron(new[] { Color.red, Color.black, Color.green, Color.black } , false);                    //3
+            tetrahedronArray[4] = new Tetrahedron(new[] { Color.black, Color.black, Color.green, Color.black },true);                     //4  center-piece
+            tetrahedronArray[5] = new Tetrahedron(new[] { Color.black, Color.black, Color.red, Color.black } , false, true);        //5
+            tetrahedronArray[6] = new Tetrahedron(new[] { Color.red, Color.black, Color.green, Color.yellow }, false);              //6   main corner
+            tetrahedronArray[7] = new Tetrahedron(new[] { Color.black, Color.black, Color.yellow, Color.black },true);                 //7 center-piece
+            tetrahedronArray[8] = new Tetrahedron(new[] { Color.red, Color.black, Color.yellow, Color.black }, false);                //8
+            tetrahedronArray[9] = new Tetrahedron(new[] { Color.black, Color.black, Color.red, Color.black },false, true);//9 center-piece
+            tetrahedronArray[10]= new Tetrahedron(new[] { Color.black, Color.black, Color.yellow, Color.black }, true);                ;  //10
+            tetrahedronArray[11]= new Tetrahedron(new[] { Color.red, Color.black, Color.yellow, Color.blue },false);      //11   main corner
+            tetrahedronArray[12]= new Tetrahedron(new[] { Color.black, Color.black, Color.blue, Color.black }, true);                 //12 center-piece
+            tetrahedronArray[13]= new Tetrahedron(new[] { Color.red, Color.black, Color.blue, Color.black }, false);      //13 
+            tetrahedronArray[14]= new Tetrahedron(new[] { Color.black, Color.black, Color.blue, Color.black } ,true);               //14 center-piece
+            tetrahedronArray[15]= new Tetrahedron(new[] { Color.black, Color.blue, Color.green, Color.black } ,false);              //15 corner
+            tetrahedronArray[16]= new Tetrahedron(new[] { Color.black, Color.black, Color.green, Color.black },true);                  //16 center-piece
+            tetrahedronArray[17]= new Tetrahedron(new[] { Color.black, Color.black, Color.green, Color.yellow },false);              //17 corner
+            tetrahedronArray[18]= new Tetrahedron(new[] { Color.black, Color.black, Color.yellow, Color.black },true);               //18 center-piece
+            tetrahedronArray[19]= new Tetrahedron(new[] { Color.black, Color.black, Color.yellow, Color.blue },false);                 //19 corner
+            tetrahedronArray[20]= new Tetrahedron(new[] { Color.black, Color.black, Color.blue, Color.black } ,true);                 //20 center-piece
+            tetrahedronArray[21]= new Tetrahedron(new[] { Color.black, Color.blue, Color.green, Color.yellow },false);              //21  main corner
 
-            }
-            if (is_bottom)
-            {
-                double[] angleMatrix = new double[16];
-                GL.glPushMatrix();
-                GL.glLoadIdentity();
-                GL.glTranslated(-0, t_height, 0);
-                GL.glGetDoublev(GL.GL_MODELVIEW_MATRIX, angleMatrix);
-                GL.glPopMatrix();
-                GL.glMultMatrixd(angleMatrix);
-                GL.glPushMatrix();
-                GL.glLoadIdentity();
-                GL.glRotated(109.7 , 1, 0, 0);
-                GL.glGetDoublev(GL.GL_MODELVIEW_MATRIX, angleMatrix);
-                GL.glGetDoublev(GL.GL_MODELVIEW_MATRIX, angleMatrix);
-                GL.glPopMatrix();
-                GL.glMultMatrixd(angleMatrix);  
-            }
-
-            GL.glBegin(GL.GL_TRIANGLES);
-            Vector[] triangle = new Vector[3];
-            for (int j = 0; j < 4; j++)
-            {
-
-                setColor(RubikController.t[only_draw].colors[j]);
-                for (int i = 0; i < 3; i++)
-                {
-                    triangle[i] = new Vector(vertices[indices[j, i], 0], vertices[indices[j, i], 1], vertices[indices[j, i], 2]);
-                    GL.glVertex3d(triangle[i].X, triangle[i].Y, triangle[i].Z);
-                }
-                drawNormal(triangle);
-
-
-            }
-
-            GL.glEnd();
-          
-            GL.glBegin(GL.GL_LINE_STRIP);
-            setColor(Color.black);
-
-            for (int j = 0; j < 4; j++)
-            {
-                for (int i = 0; i < 3; i++)
-                    GL.glVertex3d(vertices[indices[j, i], 0], vertices[indices[j, i], 1], vertices[indices[j, i], 2]);
-            }
-
-
-            GL.glEnd();
-            GL.glPopMatrix();
-
-
-        }
-        public static void setColor(Color c)
-        {
-            if (shadingMode)
-            {
-                return;
-            }
-
-            switch (c) {
-                case Color.red:
-                    GL.glColor3f(1.0f, 0.0f, 0.0f);     // Red
-                    break;
-                case Color.green:
-                    GL.glColor3f(0.0f, 1.0f, 0.0f);     // Green
-                    break;
-                case Color.yellow:
-                    GL.glColor3f(1.0f, 1.0f, 0.0f);     // Yellow
-                    break;
-                case Color.blue:
-                    GL.glColor3f(0.0f, 0.0f, 1.0f);     // Blue
-                    break;
-                case Color.black:
-                    GL.glColor3f(0.0f, 0.0f, 0.0f);     // Black
-                    break;
-            }
-            
-        }
-        public static void drawNormal(Vector [] triangle)
-        {
-            Vector a = triangle[0] - triangle[1];
-            Vector b = triangle[1] - triangle[2];
-            Vector normal = a.CrossProduct(b).Normalize();
-            GL.glNormal3d(normal.X, normal.Y, normal.Z);
-        }
-        public static void DrawSubRubik(int only = 0)
-        {
-            draw_index = 0;
-            
-            GL.glPushMatrix();
-
-            GL.glMultMatrixd(RubikController.t[only].rotation_matrix);
-
-            only_draw = only;
-
-            GL.glTranslated(0, 0, -(big_h / 4)); // center of Equilateral triangle
-            GL.glPushMatrix(); // before bottom floor
-            GL.glTranslated(-Rubik.a , -big_t_height / 3, 0); // center of Equilateral triangle
-
-
-            DrawTetrahedron(false);      //0
-            GL.glTranslated((a / 2) , 0, 0); 
-            DrawTetrahedron(true); //1
-            DrawTetrahedron(false, true);  //2
-            GL.glTranslated((a / 2) , 0, 0);
-            DrawTetrahedron(false); //3
-            GL.glTranslated((a / 2) , 0, 0);
-            DrawTetrahedron(true); //4
-            DrawTetrahedron(false, true); //5
-            GL.glTranslated((a / 2) , 0, 0);
-            DrawTetrahedron(false); //6
-
-
-            GL.glTranslated(0, t_height, 0);
-            GL.glRotated(120, 0, 0, 1);
-
-
-            DrawTetrahedron(true); //7
-            GL.glTranslated((a / 2), 0, 0);
-
-            DrawTetrahedron(false); //8
-            GL.glTranslated((a / 2) , 0, 0);
-
-            DrawTetrahedron(false,true); //9
-            DrawTetrahedron(true); //10
-            GL.glTranslated((a / 2), 0, 0);
-
-
-
-            DrawTetrahedron(false); //11
-
-
-            GL.glTranslated(0, t_height, 0);
-            GL.glRotated(120, 0, 0, 1);
-
-
-            DrawTetrahedron(true); //12
-
-            GL.glTranslated((a / 2) , 0, 0);
-            DrawTetrahedron(false); //13
-            GL.glTranslated((a / 2), 0, 0);
-            DrawTetrahedron(true); //14
-            GL.glTranslated((a / 2) , 0, 0);
-            GL.glPopMatrix(); //after bottom floor
-
-            //DrawMiddleFloor()
-            GL.glTranslated(0, 0, Rubik.h );
-
-            GL.glPushMatrix();
-            GL.glTranslated(-0.5 * a, -mid_t_height / 3,0);
-
-            DrawTetrahedron(false); //15
-            GL.glTranslated((a / 2), 0, 0);
-            DrawTetrahedron(true); //16
-            GL.glTranslated((a / 2) , 0, 0);
-            DrawTetrahedron(false); //17
-
-            GL.glTranslated(0, t_height, 0);
-            GL.glRotated(120, 0, 0, 1);
-
-            DrawTetrahedron(true); //18
-            GL.glTranslated((a / 2) , 0, 0);
-            DrawTetrahedron(false); //19
-            GL.glTranslated(0, t_height, 0);
-            GL.glRotated(120, 0, 0, 1);
-
-            DrawTetrahedron(true); //20
-            GL.glPopMatrix();
-            
-
-            //DrawTopFloor()
-            
-            GL.glTranslated(0, -(t_height/3), Rubik.h);
-            DrawTetrahedron(false); //21
-            GL.glPopMatrix();
-            draw_index = 0;
-
-        }
-        public static void init_Rubik()
-        {
-            RubikController.add_tetrahedron(0,new[] { Color.red, Color.blue, Color.green, Color.black });  //0  main corner
-            RubikController.add_tetrahedron(1,new[] { Color.black, Color.black, Color.green, Color.red });  //1 center-piece
-            RubikController.add_tetrahedron(2,new[] { Color.black, Color.black, Color.red, Color.black });  //2
-            RubikController.add_tetrahedron(3,new[] { Color.red, Color.black, Color.green, Color.black });  //3
-            RubikController.add_tetrahedron(4,new[] { Color.black, Color.black, Color.green, Color.black });  //4  center-piece
-            RubikController.add_tetrahedron(5,new[] { Color.black, Color.black, Color.red, Color.black });  //5
-            RubikController.add_tetrahedron(6,new[] { Color.red, Color.black, Color.green, Color.yellow });  //6   main corner
-            RubikController.add_tetrahedron(7,new[] { Color.black, Color.black, Color.yellow, Color.black });  //7 center-piece
-            RubikController.add_tetrahedron(8,new[] { Color.red, Color.black, Color.yellow, Color.black });  //8
-            RubikController.add_tetrahedron(9,new[] { Color.black, Color.black, Color.red, Color.black });  //9 center-piece
-            RubikController.add_tetrahedron(10,new[] { Color.black, Color.black, Color.yellow, Color.black });  //10
-            RubikController.add_tetrahedron(11,new[] { Color.red, Color.black, Color.yellow, Color.blue });  //11   main corner
-            RubikController.add_tetrahedron(12,new[] { Color.black, Color.black, Color.blue, Color.black });  //12 center-piece
-            RubikController.add_tetrahedron(13,new[] { Color.red, Color.black, Color.blue, Color.black });  //13 
-            RubikController.add_tetrahedron(14,new[] { Color.black, Color.black, Color.blue, Color.black });  //14 center-piece
-            RubikController.add_tetrahedron(15,new[] { Color.black, Color.blue, Color.green, Color.black });  //15 corner
-            RubikController.add_tetrahedron(16,new[] { Color.black, Color.black, Color.green, Color.black });  //16 center-piece
-            RubikController.add_tetrahedron(17,new[] { Color.black, Color.black, Color.green, Color.yellow });  //17 corner
-            RubikController.add_tetrahedron(18,new[] { Color.black, Color.black, Color.yellow, Color.black });  //18 center-piece
-            RubikController.add_tetrahedron(19,new[] { Color.black, Color.black, Color.yellow, Color.blue });  //19 corner
-            RubikController.add_tetrahedron(20,new[] { Color.black, Color.black, Color.blue, Color.black });  //20 center-piece
-            RubikController.add_tetrahedron(21,new[] { Color.black, Color.blue, Color.green, Color.yellow });  //21  main corner
-
-            RubikController.set_direction(1);
+            SetAxis(1);
         }
 
-        
+
+        public static void SetAxis(int axis)
+        {
+            RubikTetrahedron.axis = axis;
+            switch (axis)
+            {
+                case 1:
+                    bottom = new[] { 0, 1, 3, 4, 6, 7, 8, 10, 11, 12, 13, 14, 2, 5, 9 };
+                    middle = new[] { 15, 16, 17, 18, 19, 20 };
+                    top = 21;
+                    break;
+                case 2:
+                    bottom = new[] { 6, 4, 17, 16, 21, 20, 19, 12, 11, 9, 8, 5, 7, 18, 10 };
+                    middle = new[] { 3, 1, 15, 14, 13, 2 };
+                    top = 0;
+                    break;
+                case 3:
+                    bottom = new[] { 6, 5, 3, 2, 0, 14, 15, 20, 21, 18, 17, 7, 4, 1, 16 };
+                    middle = new[] { 8, 9, 13, 12, 19, 10 }; ;
+
+                    top = 11;
+
+                    break;
+                case 4:
+                    bottom = new[] { 0, 2, 13, 9, 11, 10, 19, 18, 21, 16, 15, 1, 14, 12, 20 };
+
+                    middle = new[] { 3,5,8,7,17,4 };
+                    top = 6;
+                    break;
+                default:
+                    return;
+            }
+            for (int i = 0; i < bottom.Length; i++)
+            {
+                tetrahedronArray[bottom[i]].loc = location.bottom;
+            }
+            for (int i = 0; i < middle.Length; i++)
+            {
+                tetrahedronArray[middle[i]].loc = location.middle;
+            }
+            tetrahedronArray[top].loc = location.top;
+
+        }
+
+        private static void rotate(ref int[] arr, int d, int n, int start)
+        {
+            int k = start;
+            Tetrahedron[] temp = new Tetrahedron[n];
+            for (int i = d + start; i < n; i++)
+            {
+                temp[k] = tetrahedronArray[arr[i]];
+                k++;
+            }
+
+            // Storing the first d elements of array arr[]
+            //  into temp
+            for (int i = 0 + start; i < d + start; i++)
+            {
+                temp[k] = tetrahedronArray[arr[i]];
+                k++;
+            }
+
+            // Copying the elements of temp[] in arr[]
+            // to get the final rotated array
+            for (int i = 0 + start; i < n; i++)
+            {
+                tetrahedronArray[arr[i]] = temp[i];
+            }
+
+        }
+        public static void rotate_bottom(bool right)
+        {
+            int d = right ? 8 : 4;
+            int d2 = right ? 2 : 1;
+            rotate(ref bottom, d, 12, 0);
+            rotate(ref bottom, d2, 15, 12);
+
+        }
+        public static void rotate_middle(bool right)
+        {
+            int d = right ? 4 : 2;
+            rotate(ref middle, d, middle.Length, 0);
+        }
+
+
     }
+
 }
