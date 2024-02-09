@@ -7,17 +7,16 @@ namespace OpenGL
         public static void DrawRubik(bool shadingMode = false)
         {
             GL.glPushMatrix();
-            GL.glTranslated(0, (RubikTetrahedron.height / 3) + 1, 0);
-            RubikTetrahedron.shadingMode = shadingMode;
+            GL.glTranslated(0, (cRubik.height / 3) + 1, 0);
+            cRubik.shadingMode = shadingMode;
 
-            Tetrahedron[] sorted = RubikTetrahedron.tetrahedronArray.OrderBy(ob => ob.id).ToArray();
+            Tetrahedron[] sorted = cRubik.tetrahedronArray.OrderBy(t => t.id).ToArray();
 
             int index = 0;
             //Draw Bottom Floor:
             GL.glPushMatrix();
             GL.glLoadIdentity();
-            GL.glTranslated(0, 0, -(RubikTetrahedron.width / 4)); // center of Equilateral triangle
-            GL.glTranslated(-Tetrahedron.edgeLength, -RubikTetrahedron.height / 3, 0); // center of Equilateral triangle
+            GL.glTranslated(-Tetrahedron.edgeLength, -cRubik.height / 3, -(cRubik.width / 4)); // center of Equilateral triangle
             DrawTetrahedron(sorted[index++]); //0
             GL.glTranslated((Tetrahedron.edgeLength / 2), 0, 0);
             DrawTetrahedron(sorted[index++]); //1
@@ -52,8 +51,8 @@ namespace OpenGL
             //Draw Middle Floor:
             GL.glPushMatrix();
             GL.glLoadIdentity();
-            GL.glTranslated(0, 0, -(RubikTetrahedron.width / 4)); // center of Equilateral triangle
-            GL.glTranslated(-0.5 * Tetrahedron.edgeLength, -RubikTetrahedron.mediumHeight / 3, Tetrahedron.height);
+            GL.glTranslated(0, 0, -(cRubik.width / 4)); // center of Equilateral triangle
+            GL.glTranslated(-0.5 * Tetrahedron.edgeLength, -cRubik.mediumHeight / 3, Tetrahedron.height);
             DrawTetrahedron(sorted[index++]); //15
             GL.glTranslated((Tetrahedron.edgeLength / 2), 0, 0);
             DrawTetrahedron(sorted[index++]); //16
@@ -72,7 +71,7 @@ namespace OpenGL
             //Draw Top Floor:
             GL.glPushMatrix();
             GL.glLoadIdentity();
-            GL.glTranslated(0, 0, -(RubikTetrahedron.width / 4)); // center of Equilateral triangle
+            GL.glTranslated(0, 0, -(cRubik.width / 4)); // center of Equilateral triangle
             GL.glTranslated(0, 0, Tetrahedron.height);
             GL.glTranslated(0, -(Tetrahedron.width / 3), Tetrahedron.height);
             DrawTetrahedron(sorted[index++]); //21

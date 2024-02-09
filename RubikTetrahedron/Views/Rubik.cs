@@ -1,12 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using OpenGL;
-using System.Runtime.InteropServices;
 using RubikTetrahedron.Enums;
 
 namespace RubikTetrahedron
@@ -20,23 +14,46 @@ namespace RubikTetrahedron
 
             InitializeComponent();
             cGL = new cOGL(panel1);
-            //apply the bars values as cGL.ScrollValue[..] properties 
-            //!!!
-            //!!!
             hScrollBarScroll(hScrollBar1, null);
             hScrollBarScroll(hScrollBar2, null);
             hScrollBarScroll(hScrollBar3, null);
-            hScrollBarScroll(hScrollBar4, null);
-            hScrollBarScroll(hScrollBar5, null);
-            hScrollBarScroll(hScrollBar6, null);
-            hScrollBarScroll(hScrollBar7, null);
-            hScrollBarScroll(hScrollBar8, null);
-            hScrollBarScroll(hScrollBar9, null);
-            //hScrollBarScroll(hScrollBar10, null);
-            hScrollBarScroll(hScrollBar11, null);
-            hScrollBarScroll(hScrollBar12, null);
-            hScrollBarScroll(hScrollBar13, null);
-            //hScrollBarScroll(hScrollBar14, null);
+
+            Button[] rotationButtons = {  xRotatePositiveBtn,xRotateNegitiveBtn, yRotateNegitiveBtn, yRotatePositiveBtn, zRotatePositiveBtn, zRotateNegitiveBtn };
+
+            for (int i = 0; i < 6; i++)
+            {
+                var timer = new Timer { Interval = 100 };
+                Rotate r = (Rotate)i;
+
+                timer.Tick += (sender, e) => handleRotate(r);
+                rotationButtons[i].MouseDown += (sender, e) => timer.Start();
+                rotationButtons[i].MouseUp += (sender, e) => timer.Stop();
+                rotationButtons[i].Click += (sender, e) => handleRotate(r);
+                rotationButtons[i].Disposed += (sender, e) =>
+                {
+                    timer.Stop();
+                    timer.Dispose();
+                };
+            }
+
+
+            Button[] translationButtons = {  xTranslateNegitiveBtn, xTranslatePositiveBtn, yTranslatePositiveBtn, yTranslateNegitiveBtn, zTranslatePositiveBtn, zTranslateNegitiveBtn };
+
+            for (int i = 0; i < 6; i++)
+            {
+                var timer = new Timer { Interval = 100 };
+                Translate t = (Translate)i;
+
+                timer.Tick += (sender, e) => handleTranslate(t);
+                translationButtons[i].MouseDown += (sender, e) => timer.Start();
+                translationButtons[i].MouseUp += (sender, e) => timer.Stop();
+                translationButtons[i].Click += (sender, e) => handleTranslate(t);
+                translationButtons[i].Disposed += (sender, e) =>
+                {
+                    timer.Stop();
+                    timer.Dispose();
+                };
+            }
         }
 
 
@@ -45,111 +62,13 @@ namespace RubikTetrahedron
             cGL.Draw();
         }
 
-        private void panel1_Resize(object sender, EventArgs e)
-        {
-            //cGL.OnResize();
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void hScrollBarScroll(object sender, ScrollEventArgs e)
         {
-            cGL.intOptionC = 0;
             HScrollBar hb = (HScrollBar)sender;
             int n = int.Parse(hb.Name.Substring(10));
-            cGL.ScrollValue[n - 1] = (hb.Value - 100) / 10.0f;
+            cGL.lightPosition[n - 1] = (hb.Value - 100) / 10.0f;
             if (e != null)
                 cGL.Draw();
-        }
-
-        public float[] oldPos = new float[7];
-
-        private void numericUpDownValueChanged(object sender, EventArgs e)
-        {
-            NumericUpDown nUD = (NumericUpDown)sender;
-            int i = int.Parse(nUD.Name.Substring(nUD.Name.Length - 1));
-            int pos = (int)nUD.Value;
-            switch (i)
-            {
-                case 1:
-                    if (pos > oldPos[i - 1])
-                    {
-                        cGL.xShift += 0.25f;
-                        cGL.intOptionC = 4;
-                    }
-                    else
-                    {
-                        cGL.xShift -= 0.25f;
-                        cGL.intOptionC = -4;
-                    }
-                    break;
-                case 2:
-                    if (pos > oldPos[i - 1])
-                    {
-                        cGL.yShift += 0.25f;
-                        cGL.intOptionC = 5;
-                    }
-                    else
-                    {
-                        cGL.yShift -= 0.25f;
-                        cGL.intOptionC = -5;
-                    }
-                    break;
-                case 3:
-                    if (pos > oldPos[i - 1])
-                    {
-                        cGL.zShift += 0.25f;
-                        cGL.intOptionC = 6;
-                    }
-                    else
-                    {
-                        cGL.zShift -= 0.25f;
-                        cGL.intOptionC = -6;
-                    }
-                    break;
-                case 4:
-                    if (pos > oldPos[i - 1])
-                    {
-                        cGL.xAngle += 5;
-                        cGL.intOptionC = 1;
-                    }
-                    else
-                    {
-                        cGL.xAngle -= 5;
-                        cGL.intOptionC = -1;
-                    }
-                    break;
-                case 5:
-                    if (pos > oldPos[i - 1])
-                    {
-                        cGL.yAngle += 5;
-                        cGL.intOptionC = 2;
-                    }
-                    else
-                    {
-                        cGL.yAngle -= 5;
-                        cGL.intOptionC = -2;
-                    }
-                    break;
-                case 6:
-                    if (pos > oldPos[i - 1])
-                    {
-                        cGL.zAngle += 5;
-                        cGL.intOptionC = 3;
-                    }
-                    else
-                    {
-                        cGL.zAngle -= 5;
-                        cGL.intOptionC = -3;
-                    }
-                    break;
-            }
-            cGL.Draw();
-            oldPos[i - 1] = pos;
-            cGL.intOptionC = 0;
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -157,13 +76,8 @@ namespace RubikTetrahedron
             cGL.alpha -= 15;
             cGL.Draw();
         }
-
-
-
         private void rotate_top(object sender, EventArgs e)
         {
-
-
             bool right = true;
             if (sender == top_left)
                 right = false;
@@ -176,22 +90,17 @@ namespace RubikTetrahedron
                 double[] rotation_matrix = new double[16];
                 double[] temp = new double[16];
                 GL.glLoadIdentity();
-                GL.glRotated(rotate_direction, OpenGL.RubikTetrahedron.dir_XYZ[OpenGL.RubikTetrahedron.axis - 1, 0], OpenGL.RubikTetrahedron.dir_XYZ[OpenGL.RubikTetrahedron.axis - 1, 1], OpenGL.RubikTetrahedron.dir_XYZ[OpenGL.RubikTetrahedron.axis - 1, 2]);
+                GL.glRotated(rotate_direction, cRubik.dir_XYZ[cRubik.axis - 1, 0], cRubik.dir_XYZ[cRubik.axis - 1, 1], cRubik.dir_XYZ[cRubik.axis - 1, 2]);
                 GL.glGetDoublev(GL.GL_MODELVIEW_MATRIX, temp);
-                GL.glMultMatrixd(OpenGL.RubikTetrahedron.tetrahedronArray[OpenGL.RubikTetrahedron.top].rotation_matrix);
+                GL.glMultMatrixd(cRubik.tetrahedronArray[cRubik.top].rotation_matrix);
                 GL.glGetDoublev(GL.GL_MODELVIEW_MATRIX, rotation_matrix);
 
-                OpenGL.RubikTetrahedron.tetrahedronArray[OpenGL.RubikTetrahedron.top].rotation_matrix = (double[])rotation_matrix.Clone();
+                cRubik.tetrahedronArray[cRubik.top].rotation_matrix = (double[])rotation_matrix.Clone();
                 GL.glPopMatrix();
                 cGL.Draw();
 
             }
         }
-
-
-
-
-
         private void rotate_middle(object sender, EventArgs e)
         {
             bool right = true;
@@ -201,28 +110,27 @@ namespace RubikTetrahedron
 
             for (int j = 0; j < 120; j++)
             {
-                for (int i = 0; i < OpenGL.RubikTetrahedron.tetrahedronArray.Length; i++)
+                for (int i = 0; i < cRubik.tetrahedronArray.Length; i++)
                 {
-                    if (OpenGL.RubikTetrahedron.tetrahedronArray[i].loc == location.middle)
+                    if (cRubik.tetrahedronArray[i].loc == location.middle)
                     {
-                        //RubikController.t[i].rotation_in_dir[RubikController.axis - 1] += 1 * rotate_direction;
                         GL.glPushMatrix();
                         double[] rotation_matrix = new double[16];
                         double[] temp = new double[16];
                         GL.glLoadIdentity();
-                        GL.glRotated(rotate_direction, OpenGL.RubikTetrahedron.dir_XYZ[OpenGL.RubikTetrahedron.axis - 1, 0], OpenGL.RubikTetrahedron.dir_XYZ[OpenGL.RubikTetrahedron.axis - 1, 1], OpenGL.RubikTetrahedron.dir_XYZ[OpenGL.RubikTetrahedron.axis - 1, 2]);
+                        GL.glRotated(rotate_direction, cRubik.dir_XYZ[cRubik.axis - 1, 0], cRubik.dir_XYZ[cRubik.axis - 1, 1], cRubik.dir_XYZ[cRubik.axis - 1, 2]);
                         GL.glGetDoublev(GL.GL_MODELVIEW_MATRIX, temp);
-                        GL.glMultMatrixd(OpenGL.RubikTetrahedron.tetrahedronArray[i].rotation_matrix);
+                        GL.glMultMatrixd(cRubik.tetrahedronArray[i].rotation_matrix);
                         GL.glGetDoublev(GL.GL_MODELVIEW_MATRIX, rotation_matrix);
 
-                        OpenGL.RubikTetrahedron.tetrahedronArray[i].rotation_matrix = (double[])rotation_matrix.Clone();
+                        cRubik.tetrahedronArray[i].rotation_matrix = (double[])rotation_matrix.Clone();
                         GL.glPopMatrix();
                     }
 
                 }
                 cGL.Draw();
             }
-            OpenGL.RubikTetrahedron.rotate_middle(right);
+            cRubik.rotate_middle(right);
 
         }
         private void rotate_bottom(object sender, EventArgs e)
@@ -234,49 +142,97 @@ namespace RubikTetrahedron
 
             for (int j = 0; j < 120; j++)
             {
-                for (int i = 0; i < OpenGL.RubikTetrahedron.tetrahedronArray.Length; i++)
+                for (int i = 0; i < cRubik.tetrahedronArray.Length; i++)
                 {
-                    if (OpenGL.RubikTetrahedron.tetrahedronArray[i].loc == location.bottom)
+                    if (cRubik.tetrahedronArray[i].loc == location.bottom)
                     {
                         GL.glPushMatrix();
                         double[] rotation_matrix = new double[16];
                         double[] temp = new double[16];
                         GL.glLoadIdentity();
-                        GL.glRotated(rotate_direction, OpenGL.RubikTetrahedron.dir_XYZ[OpenGL.RubikTetrahedron.axis - 1, 0], OpenGL.RubikTetrahedron.dir_XYZ[OpenGL.RubikTetrahedron.axis - 1, 1], OpenGL.RubikTetrahedron.dir_XYZ[OpenGL.RubikTetrahedron.axis - 1, 2]);
+                        GL.glRotated(rotate_direction, cRubik.dir_XYZ[cRubik.axis - 1, 0], cRubik.dir_XYZ[cRubik.axis - 1, 1], cRubik.dir_XYZ[cRubik.axis - 1, 2]);
                         GL.glGetDoublev(GL.GL_MODELVIEW_MATRIX, temp);
-                        //GL.glLoadMatrixd(RubikController.t[i].rotation_matrix);
-                        GL.glMultMatrixd(OpenGL.RubikTetrahedron.tetrahedronArray[i].rotation_matrix);
+                        GL.glMultMatrixd(cRubik.tetrahedronArray[i].rotation_matrix);
                         GL.glGetDoublev(GL.GL_MODELVIEW_MATRIX, rotation_matrix);
 
-                        OpenGL.RubikTetrahedron.tetrahedronArray[i].rotation_matrix = (double[])rotation_matrix.Clone();
+                        cRubik.tetrahedronArray[i].rotation_matrix = (double[])rotation_matrix.Clone();
                         GL.glPopMatrix();
                     }
                 }
                 cGL.Draw();
             }
-            OpenGL.RubikTetrahedron.rotate_bottom(right);
+            cRubik.rotate_bottom(right);
         }
         private void direction_radioButton(object sender, EventArgs e)
         {
             if (sender == direction1)
             {
-                OpenGL.RubikTetrahedron.SetAxis(1);
+                cRubik.SetAxis(1);
             }
             else if (sender == direction2)
             {
-                OpenGL.RubikTetrahedron.SetAxis(2);
+                cRubik.SetAxis(2);
             }
             else if (sender == direction3)
             {
-                OpenGL.RubikTetrahedron.SetAxis(3);
+                cRubik.SetAxis(3);
             }
             else if (sender == direction4)
             {
-                OpenGL.RubikTetrahedron.SetAxis(4);
+                cRubik.SetAxis(4);
             }
 
         }
-
+        private void handleTranslate(Translate t)
+        {
+            switch (t)
+            {
+                case Translate.xPositive:
+                    cGL.xTranslateAmount += 0.25f;
+                    break;
+                case Translate.xNegitive:
+                    cGL.xTranslateAmount -= 0.25f;
+                    break;
+                case Translate.yPositive:
+                    cGL.yTranslateAmount -= 0.25f;
+                    break;
+                case Translate.yNegitive:
+                    cGL.yTranslateAmount += 0.25f;
+                    break;
+                case Translate.zPositive:
+                    cGL.zoomIn -= 0.25f;
+                    break;
+                case Translate.zNegitive:
+                    cGL.zoomIn += 0.25f;
+                    break;
+            }
+            cGL.Draw();
+        }
+        private void handleRotate(Rotate r)
+        {
+            switch (r)
+            {
+                case Rotate.xPositive:
+                    cGL.xRotateAngle += 3f;
+                    break;
+                case Rotate.xNegitive:
+                    cGL.xRotateAngle -= 3f;
+                    break;
+                case Rotate.yPositive:
+                    cGL.yRotateAngle += 3f;
+                    break;
+                case Rotate.yNegitive:
+                    cGL.yRotateAngle -= 3f;
+                    break;
+                case Rotate.zPositive:
+                    cGL.zRotateAngle -= 0.1f;
+                    break;
+                case Rotate.zNegitive:
+                    cGL.zRotateAngle += 0.1f;
+                    break;
+            }
+            cGL.Draw();
+        }
 
     }
 }

@@ -1,5 +1,4 @@
-﻿
-namespace OpenGL
+﻿namespace OpenGL
 {
     public static partial class Utils
     {          
@@ -8,7 +7,7 @@ namespace OpenGL
             GL.glPushMatrix();
             GL.glTranslatef(0, Room.baseUnit, 0);
             GL.glEnable(GL.GL_LIGHTING);
-            //!!! for blended REFLECTION 
+            //for blended reflection:
             GL.glColor4d(0.8, 0.8, 0.8, 0.6);
             GL.glBegin(GL.GL_QUADS);
 

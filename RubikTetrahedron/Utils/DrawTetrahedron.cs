@@ -24,48 +24,18 @@ namespace OpenGL
             GL.glMultMatrixd(CurrentRotationTraslation);
 
 
-            if (t.isFlippedPiece)
-            {
-                double[] angleMatrix = new double[16];
-                GL.glPushMatrix();
-                GL.glLoadIdentity();
-                GL.glTranslated(-0, Tetrahedron.width / 3, Tetrahedron.height);
-                GL.glGetDoublev(GL.GL_MODELVIEW_MATRIX, angleMatrix);
-                GL.glPopMatrix();
-                GL.glMultMatrixd(angleMatrix);
-                GL.glPushMatrix();
-                GL.glLoadIdentity();
-                GL.glRotated(180, 0, 1, 0);
-                GL.glRotated(37.9, 1, 0, 0);
-                GL.glGetDoublev(GL.GL_MODELVIEW_MATRIX, angleMatrix);
-                GL.glPopMatrix();
-                GL.glMultMatrixd(angleMatrix);
-
+            if (t.isFlippedPiece){
+                FlippedPiece();
             }
-            if (t.isBottomPiece)
-            {
-                double[] angleMatrix = new double[16];
-                GL.glPushMatrix();
-                GL.glLoadIdentity();
-                GL.glTranslated(-0, Tetrahedron.width, 0);
-                GL.glGetDoublev(GL.GL_MODELVIEW_MATRIX, angleMatrix);
-                GL.glPopMatrix();
-                GL.glMultMatrixd(angleMatrix);
-                GL.glPushMatrix();
-                GL.glLoadIdentity();
-                GL.glRotated(109.7, 1, 0, 0);
-                GL.glGetDoublev(GL.GL_MODELVIEW_MATRIX, angleMatrix);
-                GL.glGetDoublev(GL.GL_MODELVIEW_MATRIX, angleMatrix);
-                GL.glPopMatrix();
-                GL.glMultMatrixd(angleMatrix);
+            if (t.isBottomPiece){
+                BottomPiece();
             }
 
             GL.glBegin(GL.GL_TRIANGLES);
             Vector[] triangle = new Vector[3];
-            Vector normal;
             for (int j = 0; j < 4; j++)
             {
-                if (!RubikTetrahedron.shadingMode)
+                if (!cRubik.shadingMode)
                 {
                     setColor(t.colors[j]);
                 }
@@ -74,17 +44,13 @@ namespace OpenGL
                     triangle[i] = new Vector(vertices[indices[j, i], 0], vertices[indices[j, i], 1], vertices[indices[j, i], 2]);
                     GL.glVertex3d(triangle[i].X, triangle[i].Y, triangle[i].Z);
                 }
-
-                Vector a = triangle[0];
-                Vector b = triangle[1];
-                normal = a.CrossProduct(b).Normalize();
-                GL.glNormal3d(normal.X, normal.Y, normal.Z);
+          
             }
 
             GL.glEnd();
 
             GL.glBegin(GL.GL_LINE_STRIP);
-            if (!RubikTetrahedron.shadingMode)
+            if (!cRubik.shadingMode)
             {
                 setColor(Color.black);
             }
@@ -100,6 +66,41 @@ namespace OpenGL
             GL.glPopMatrix();
             GL.glLoadMatrixd(CurrentRotationTraslation);
 
+        }
+
+        private static void FlippedPiece()
+        {
+            double[] angleMatrix = new double[16];
+            GL.glPushMatrix();
+            GL.glLoadIdentity();
+            GL.glTranslated(-0, Tetrahedron.width / 3, Tetrahedron.height);
+            GL.glGetDoublev(GL.GL_MODELVIEW_MATRIX, angleMatrix);
+            GL.glPopMatrix();
+            GL.glMultMatrixd(angleMatrix);
+            GL.glPushMatrix();
+            GL.glLoadIdentity();
+            GL.glRotated(180, 0, 1, 0);
+            GL.glRotated(39, 1, 0, 0);
+            GL.glGetDoublev(GL.GL_MODELVIEW_MATRIX, angleMatrix);
+            GL.glPopMatrix();
+            GL.glMultMatrixd(angleMatrix);
+        }
+        public static void BottomPiece()
+        {
+            double[] angleMatrix = new double[16];
+            GL.glPushMatrix();
+            GL.glLoadIdentity();
+            GL.glTranslated(-0, Tetrahedron.width, 0);
+            GL.glGetDoublev(GL.GL_MODELVIEW_MATRIX, angleMatrix);
+            GL.glPopMatrix();
+            GL.glMultMatrixd(angleMatrix);
+            GL.glPushMatrix();
+            GL.glLoadIdentity();
+            GL.glRotated(109.5, 1, 0, 0);
+            GL.glGetDoublev(GL.GL_MODELVIEW_MATRIX, angleMatrix);
+            GL.glGetDoublev(GL.GL_MODELVIEW_MATRIX, angleMatrix);
+            GL.glPopMatrix();
+            GL.glMultMatrixd(angleMatrix);
         }
     }
 }

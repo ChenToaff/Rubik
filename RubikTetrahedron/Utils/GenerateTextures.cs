@@ -13,8 +13,6 @@ namespace OpenGL
                                     Resources.left,Resources.right,Resources.top,Resources.bottom};
             for (int i = 0; i < 6; i++)
             {
-
-                //RubikTetrahedron.Properties.
                 Bitmap image = new Bitmap(images[i]);
                 image.RotateFlip(RotateFlipType.RotateNoneFlipY); //Y axis in Windows is directed downwards, while in OpenGL-upwards
                 System.Drawing.Imaging.BitmapData bitmapdata;

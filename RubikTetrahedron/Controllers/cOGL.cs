@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
-using System.Drawing;
 
 namespace OpenGL
 {
@@ -12,6 +9,15 @@ namespace OpenGL
         int Height;
         public float alpha;
         GLUquadric obj;
+        public float xRotateAngle = 0;
+        public float yRotateAngle = 0;
+        public float zRotateAngle = 0;
+        public float xTranslateAmount = 0;
+        public float yTranslateAmount = -2f;
+        public float zTranslateAmount = -2f;
+        public float zoomIn = 10;
+
+        public float[] lightPosition = new float[3];
 
         public cOGL(Control pb)
         {
@@ -19,14 +25,14 @@ namespace OpenGL
             Width = p.Width;
             Height = p.Height;
             InitializeGL();
-            obj = GLU.gluNewQuadric(); //!!!
-            RubikTetrahedron.Init();
+            obj = GLU.gluNewQuadric();
+            cRubik.Init();
             Utils.GenerateTextures();
         }
 
         ~cOGL()
         {
-            GLU.gluDeleteQuadric(obj); //!!!
+            GLU.gluDeleteQuadric(obj);
             WGL.wglDeleteContext(m_uint_RC);
         }
 
@@ -50,25 +56,10 @@ namespace OpenGL
             get { return m_uint_RC; }
         }        
 
-        public float[] ScrollValue = new float[14];
-        public float zShift = 0.0f;
-        public float yShift = 0.0f;
-        public float xShift = 0.0f;
-        public float zAngle = 0.0f;
-        public float yAngle = 0.0f;
-        public float xAngle = 0.0f;
-        public float ARM_ANGLE = 0.0f;
-
-        public int intOptionC = 0;
-        double[] AccumulatedRotationsTraslations = new double[16];
-        public float[] lightPosition = new float[4];
+        
 
         public void Draw()
         {
-            lightPosition[0] = ScrollValue[10];
-            lightPosition[1] = ScrollValue[11];
-            lightPosition[2] = ScrollValue[12];
-            lightPosition[3] = 1.0f;
 
             if (m_uint_DC == 0 || m_uint_RC == 0)
                 return;
@@ -77,79 +68,11 @@ namespace OpenGL
 
             GL.glLoadIdentity();
 
-            // not trivial
-            double[] ModelVievMatrixBeforeSpecificTransforms = new double[16];
-            double[] CurrentRotationTraslation = new double[16];
+            GLU.gluLookAt(0, 0, zoomIn, 0, 0, 0, zRotateAngle, 1, 0);
+            GL.glTranslatef(xTranslateAmount, yTranslateAmount, zTranslateAmount);
+            GL.glRotatef(xRotateAngle, 1, 0, 0);
+            GL.glRotatef(yRotateAngle, 0, 1, 0);
 
-            GLU.gluLookAt(ScrollValue[0], ScrollValue[1], ScrollValue[2],
-                       ScrollValue[3], ScrollValue[4], ScrollValue[5],
-                       ScrollValue[6], ScrollValue[7], ScrollValue[8]);
-            GL.glTranslatef(0.0f, -2.0f, -2.2f);
-
-
-            //save current ModelView Matrix values
-            //in ModelVievMatrixBeforeSpecificTransforms array
-            //ModelView Matrix ========>>>>>> ModelVievMatrixBeforeSpecificTransforms
-            GL.glGetDoublev(GL.GL_MODELVIEW_MATRIX, ModelVievMatrixBeforeSpecificTransforms);
-            //ModelView Matrix was saved, so
-            GL.glLoadIdentity(); // make it identity matrix
-
-            //make transformation in accordance to KeyCode
-            float delta;
-            if (intOptionC != 0)
-            {
-                delta = 5.0f * Math.Abs(intOptionC) / intOptionC; // signed 5
-
-                switch (Math.Abs(intOptionC))
-                {
-                    case 1:
-                        GL.glRotatef(delta, 1, 0, 0);
-                        break;
-                    case 2:
-                        GL.glRotatef(delta, 0, 1, 0);
-                        break;
-                    case 3:
-                        GL.glRotatef(delta, 0, 0, 1);
-                        break;
-                    case 4:
-                        GL.glTranslatef(delta / 20, 0, 0);
-                        break;
-                    case 5:
-                        GL.glTranslatef(0, delta / 20, 0);
-                        break;
-                    case 6:
-                        GL.glTranslatef(0, 0, delta / 20);
-                        break;
-                }
-            }
-            //as result - the ModelView Matrix now is pure representation
-            //of KeyCode transform and only it !!!
-
-            //save current ModelView Matrix values
-            //in CurrentRotationTraslation array
-            //ModelView Matrix =======>>>>>>> CurrentRotationTraslation
-            GL.glGetDoublev(GL.GL_MODELVIEW_MATRIX, CurrentRotationTraslation);
-
-            //The GL.glLoadMatrix function replaces the current matrix with
-            //the one specified in its argument.
-            //The current matrix is the
-            //projection matrix, modelview matrix, or texture matrix,
-            //determined by the current matrix mode (now is ModelView mode)
-            GL.glLoadMatrixd(AccumulatedRotationsTraslations); //Global Matrix
-
-            //The GL.glMultMatrix function multiplies the current matrix by
-            //the one specified in its argument.
-            //That is, if M is the current matrix and T is the matrix passed to
-            //GL.glMultMatrix, then M is replaced with M � T
-            GL.glMultMatrixd(CurrentRotationTraslation);
-
-            //save the matrix product in AccumulatedRotationsTraslations
-            GL.glGetDoublev(GL.GL_MODELVIEW_MATRIX, AccumulatedRotationsTraslations);
-
-            //replace ModelViev Matrix with stored ModelVievMatrixBeforeSpecificTransforms
-            GL.glLoadMatrixd(ModelVievMatrixBeforeSpecificTransforms);
-            //multiply it by KeyCode defined AccumulatedRotationsTraslations matrix
-            GL.glMultMatrixd(AccumulatedRotationsTraslations);
             Utils.DrawRoom();
             Utils.DrawLightSource(lightPosition);
             Utils.DrawReflection();
@@ -244,15 +167,13 @@ namespace OpenGL
             GL.glMatrixMode(GL.GL_PROJECTION);
             GL.glLoadIdentity();
 
-            //nice 3D
+            //3D:
             GLU.gluPerspective(45.0, 1.0, 0.4, 100.0);
 
 
             GL.glMatrixMode(GL.GL_MODELVIEW);
             GL.glLoadIdentity();
 
-            //save the current MODELVIEW Matrix (now it is Identity)
-            GL.glGetDoublev(GL.GL_MODELVIEW_MATRIX, AccumulatedRotationsTraslations);
         }
     }
 

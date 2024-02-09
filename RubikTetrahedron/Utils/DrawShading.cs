@@ -35,7 +35,7 @@ namespace OpenGL
             //SHADING begin
             GL.glDisable(GL.GL_LIGHTING);
             GL.glEnable(GL.GL_BLEND);
-            RubikTetrahedron.shadingMode = true;
+            cRubik.shadingMode = true;
             float[,] wall = new float[3, 3];
             for (int j = 0; j < 5; j++)
             {
@@ -47,14 +47,11 @@ namespace OpenGL
                 }
                 GL.glPushMatrix();
                 GL.glMultMatrixf(Helpers.MakeShadowMatrix(wall, lightPosition));
-                if (j == 4)
-                {
-                    GL.glColor4d(0.5, 0.5, 0.5, 0.5);            // shadow
+                if (j == 4){
+                    GL.glColor4d(0.5, 0.5, 0.5, 0.5);  // shadow
                 }
-                else
-                {
-                    GL.glColor4d(0.5 + (0.1 * j), 0.5 + (0.1 * j), 0.5 + (0.1 * j), 0.7);            // shadow
-
+                else{
+                    GL.glColor4d(0.5 + (0.1 * j), 0.5 + (0.1 * j), 0.5 + (0.1 * j), 0.7);  // shadow
                 }
                 DrawRubik(true);
 
@@ -62,7 +59,6 @@ namespace OpenGL
             }
             GL.glDisable(GL.GL_BLEND);
             //GL.glDepthMask((byte)GL.GL_FALSE);
-            //DrawRoom();
             GL.glDepthMask((byte)GL.GL_TRUE);
             // Disable GL.GL_STENCIL_TEST to show All, else it will be cut on GL.GL_STENCIL
             GL.glDisable(GL.GL_STENCIL_TEST);

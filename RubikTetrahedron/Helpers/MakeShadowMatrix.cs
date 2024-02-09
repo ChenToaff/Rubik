@@ -4,10 +4,6 @@ namespace OpenGL
 {
     public static partial class Helpers
     {
-		public static int x = 0;
-		public static int y = 1;
-		public static int z = 2;
-
 		public static float[] MakeShadowMatrix(float[,] points,float [] pos)
 		{
 			float[] cubeXform = new float[16];
@@ -51,10 +47,10 @@ namespace OpenGL
 			cubeXform[14] = 0.0f - pos[2] * planeCoeff[3];
 
 			// Fourth Column
-			cubeXform[3] = 0.0f - pos[3] * planeCoeff[0];
-			cubeXform[7] = 0.0f - pos[3] * planeCoeff[1];
-			cubeXform[11] = 0.0f - pos[3] * planeCoeff[2];
-			cubeXform[15] = dot - pos[3] * planeCoeff[3];
+			cubeXform[3] = 0.0f -  planeCoeff[0];
+			cubeXform[7] = 0.0f -  planeCoeff[1];
+			cubeXform[11] = 0.0f - planeCoeff[2];
+			cubeXform[15] = dot -  planeCoeff[3];
 
 			return cubeXform;
 		}
@@ -63,8 +59,8 @@ namespace OpenGL
 		{
 			float[] v1 = new float[3];
 			float[] v2 = new float[3];
-
-			// Calculate two vectors from the three points
+			int x = 0, y = 1, z = 2;
+			// Calculate two vectors from the three points:
 			v1[x] = v[0, x] - v[1, x];
 			v1[y] = v[0, y] - v[1, y];
 			v1[z] = v[0, z] - v[1, z];

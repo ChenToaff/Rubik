@@ -16,12 +16,12 @@ namespace OpenGL
         public static double height = (Math.Sqrt(6) / 3) * edgeLength;
         public static double width = (Math.Sqrt(3) / 2) * edgeLength;
 
-        public Tetrahedron(Color[] colors, bool flippedPiece, bool bottomPiece = false)
+        public Tetrahedron(Color[] colors, bool isFlippedPiece, bool isBottomPiece = false)
         {
             this.id = idCounter++;
             this.colors = (Color[])colors.Clone();
-            this.isFlippedPiece = flippedPiece;
-            this.isBottomPiece = bottomPiece;
+            this.isFlippedPiece = isFlippedPiece;
+            this.isBottomPiece = isBottomPiece;
         }
     }
 }

@@ -14,4 +14,23 @@
         middle,
         bottom,
     }
+
+    public enum Rotate
+    {
+        xPositive,
+        xNegitive,
+        yPositive,
+        yNegitive,
+        zPositive,
+        zNegitive
+    }
+    public enum Translate {
+        xPositive,
+        xNegitive,
+        yPositive,
+        yNegitive,
+        zPositive,
+        zNegitive
+    }
+
 }
